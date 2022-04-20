@@ -17,31 +17,34 @@ export default function App() {
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
       {/* <StatusBar style="auto" /> */}
-      <ScrollView style={styles.data_container}>
-        {
-          userData.map(data => {
-            return (
-              <View>
-                <Text>User Data:</Text>
-                {
-                  Object.keys(data).map(key => {
-                    if(typeof data[key] === 'object') return null
-                    console.log('why',key, data[key])
+      <ScrollView>
 
-                    return (
-                      <View>
-                        <Text>{key}:</Text>
+        <View style={styles.data_container}>
+          {
+            userData.map(data => {
+              return (
+                <View style={styles.data_point}>
+                  <Text>User Data:</Text>
+                  {
+                    Object.keys(data).map(key => {
+                      if(typeof data[key] === 'object' || key.includes('Id')) return null
+                      // console.log('why',key, data[key])
+
+                      return (
                         <View>
-                          <Text>{data[key]}</Text>
+                          <Text>{key}:</Text>
+                          <View>
+                            <Text>{data[key]}</Text>
+                          </View>
                         </View>
-                      </View>
-                    )
-                  })
-                }
-              </View>
-            )
-          })
-        }
+                      )
+                    })
+                  }
+                </View>
+              )
+            })
+          }
+        </View>
       </ScrollView>
     </View>
   );
@@ -53,10 +56,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 100,
   },
   data_container: {
     display: 'flex',
     flexDirection: 'row',
     flex: 1
+  },
+  data_point: {
+    paddingLeft: 2,
+    paddingRight: 2,
+    paddingTop: 2,
+    paddingBottom: 2,
   }
 });
