@@ -5,6 +5,7 @@ import getUserData from './data'
 
 export default function App() {
   const [userData, setUserData] = useState([])
+  const [current, setCurrent] = useState({})
 
   useEffect(() => {
     let data = getUserData({
@@ -14,15 +15,30 @@ export default function App() {
     setUserData(data)
     // let filtered = data.filter((d, i) => i < 10)
     // setUserData(filtered)
+    setCurrent(data[data.length-1])
   }, [])
 
 
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      {/* <Text>Open up App.js to start working on your app!</Text> */}
       {/* <StatusBar style="auto" /> */}
+      <View style={styles.current_stats_container}>
+        <Text>Current Mood:</Text>
+        <View style={styles.current_stat}>
+          <Text>Anxiety Level:</Text>
+          <Text>{current.anxietyLevel}</Text>
+        </View>
+        <View style={styles.current_stat}>
+          <Text>Anxiety State:</Text>
+          <Text>{current.anxietyState}</Text>
+        </View>
+        <View style={styles.current_stat}>
+          <Text>BPM:</Text>
+          <Text>{current.currentBpm}</Text>
+        </View>
+      </View>
       <ScrollView>
-
         <View style={styles.data_container}>
           {
             userData.map((data, index) => {
@@ -72,5 +88,8 @@ const styles = StyleSheet.create({
     paddingRight: 2,
     paddingTop: 2,
     paddingBottom: 2,
+  },
+  current_stat: {
+    flexDirection: 'row',
   }
 });
