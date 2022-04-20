@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "awake-fe",
+    "slug": "awake-fe",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
