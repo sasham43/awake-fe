@@ -7,9 +7,13 @@ export default function App() {
   const [userData, setUserData] = useState([])
 
   useEffect(() => {
-    let data = getUserData()
-    let filtered = data.filter((d, i) => i < 10)
-    setUserData(filtered)
+    let data = getUserData({
+      limit: 500
+    })
+    // console.log('get user data', data.length)
+    setUserData(data)
+    // let filtered = data.filter((d, i) => i < 10)
+    // setUserData(filtered)
   }, [])
 
 
@@ -21,17 +25,17 @@ export default function App() {
 
         <View style={styles.data_container}>
           {
-            userData.map(data => {
+            userData.map((data, index) => {
               return (
-                <View style={styles.data_point}>
+                <View key={`data-point-${index}`} style={styles.data_point}>
                   <Text>User Data:</Text>
                   {
-                    Object.keys(data).map(key => {
+                    Object.keys(data).map((key, i) => {
                       if(typeof data[key] === 'object' || key.includes('Id')) return null
                       // console.log('why',key, data[key])
 
                       return (
-                        <View>
+                        <View key={`key-${index}-${key}`}>
                           <Text>{key}:</Text>
                           <View>
                             <Text>{data[key]}</Text>

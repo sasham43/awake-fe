@@ -1,6 +1,6 @@
 const data = require('./data.json')
 
-export default function getUserData(){
+export default function getUserData({ limit }){
     return data.sort((a, b) => {
         if(a.time > b.time){
             return 1
@@ -9,5 +9,7 @@ export default function getUserData(){
             return -1
         }
         return 0
+    }).filter((data, index) => {
+        return index < limit
     })
 }
