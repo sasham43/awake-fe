@@ -7,6 +7,7 @@ import getUserData from './data'
 export default function App() {
   const [userData, setUserData] = useState([])
   const [current, setCurrent] = useState({})
+  const [labels, setLabels] = useState([])
 
   useEffect(() => {
     let data = getUserData({
@@ -18,6 +19,19 @@ export default function App() {
     // setUserData(filtered)
     setCurrent(data[data.length-1])
   }, [])
+
+  useEffect(() => {
+    userData.forEach(data => {
+      let hour = data.displayTime.hour()
+      if(!labels.includes(hour)) setLabels([...labels, hour])
+    })
+  }, [userData])
+
+  function onClick(info){
+    console.log('click', info)
+    let dataPoint = userData[info.index]
+    setCurrent(dataPoint)
+  }
 
   const chartConfig = {
     backgroundGradientFrom: "#ffffff",
@@ -36,7 +50,7 @@ export default function App() {
       {/* <Text>Open up App.js to start working on your app!</Text> */}
       {/* <StatusBar style="auto" /> */}
       <View style={styles.current_stats_container}>
-        <Text>Current Mood:</Text>
+        {/* <Text>Current Mood:</Text> */}
         <View style={styles.current_stat}>
           <Text>Anxiety Level:</Text>
           <Text>{current.anxietyLevel}</Text>
@@ -48,6 +62,10 @@ export default function App() {
         <View style={styles.current_stat}>
           <Text>BPM:</Text>
           <Text>{current.currentBpm}</Text>
+        </View>
+        <View style={styles.current_stat}>
+          <Text>Time:</Text>
+          <Text>{current.displayTime.format()}</Text>
         </View>
       </View>
       {/* <ScrollView>
@@ -79,10 +97,11 @@ export default function App() {
       </ScrollView> */}
 
       <View>
-        <Text>Line Chart</Text>
+        <Text>Anxiety Level</Text>
         <LineChart 
           data={{
-            labels: ['8:00', '9:00', '10:00'],
+            labels: labels,
+            // labels: ['8:00', '9:00', '10:00'],
             datasets: [{
               data: userData.map(d => d.anxietyLevel)
             }]
@@ -90,6 +109,7 @@ export default function App() {
           height={200}
           width={Dimensions.get("window").width}
           chartConfig={chartConfig}
+          onDataPointClick={onClick}
         />        
       </View>
     </View>

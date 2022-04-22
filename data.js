@@ -17,7 +17,8 @@ export default function getUserData({ limit }){
     }).map(data => {
         return {
             ...data,
-            displayTime: dayjs(data.time).format()
+            displayTime: dayjs(data.time)
+            // displayTime: dayjs(data.time).format()
         }
     })
 }
