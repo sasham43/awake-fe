@@ -1,4 +1,7 @@
+import dayjs from 'dayjs'
+
 const data = require('./data.json')
+
 
 export default function getUserData({ limit }){
     return data.sort((a, b) => {
@@ -11,5 +14,10 @@ export default function getUserData({ limit }){
         return 0
     }).filter((data, index) => {
         return index < limit
+    }).map(data => {
+        return {
+            ...data,
+            displayTime: dayjs(data.time).format()
+        }
     })
 }

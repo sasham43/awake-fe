@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+// import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import getUserData from './data'
@@ -9,7 +9,7 @@ export default function App() {
 
   useEffect(() => {
     let data = getUserData({
-      limit: 500
+      limit: 50
     })
     // console.log('get user data', data.length)
     setUserData(data)
@@ -48,7 +48,6 @@ export default function App() {
                   {
                     Object.keys(data).map((key, i) => {
                       if(typeof data[key] === 'object' || key.includes('Id')) return null
-                      // console.log('why',key, data[key])
 
                       return (
                         <View key={`key-${index}-${key}`}>
