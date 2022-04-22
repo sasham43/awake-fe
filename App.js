@@ -1,6 +1,7 @@
 // import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
+import { LineChart } from 'react-native-chart-kit'
 import getUserData from './data'
 
 export default function App() {
@@ -17,6 +18,17 @@ export default function App() {
     // setUserData(filtered)
     setCurrent(data[data.length-1])
   }, [])
+
+  const chartConfig = {
+    backgroundGradientFrom: "#ffffff",
+    backgroundGradientFromOpacity: 1,
+    backgroundGradientTo: "#ffffff",
+    backgroundGradientToOpacity: 1,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false // optional
+  };
 
 
   return (
@@ -38,7 +50,7 @@ export default function App() {
           <Text>{current.currentBpm}</Text>
         </View>
       </View>
-      <ScrollView>
+      {/* <ScrollView>
         <View style={styles.data_container}>
           {
             userData.map((data, index) => {
@@ -64,7 +76,22 @@ export default function App() {
             })
           }
         </View>
-      </ScrollView>
+      </ScrollView> */}
+
+      <View>
+        <Text>Line Chart</Text>
+        <LineChart 
+          data={{
+            labels: ['8:00', '9:00', '10:00'],
+            datasets: [{
+              data: userData.map(d => d.anxietyLevel)
+            }]
+          }}
+          height={200}
+          width={Dimensions.get("window").width}
+          chartConfig={chartConfig}
+        />        
+      </View>
     </View>
   );
 }
