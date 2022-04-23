@@ -90,7 +90,7 @@ export default function App() {
         </View>
       </View>
       
-      <View>
+      <View style={styles.select_container}>
         <View>
           <Pressable style={styles.select_button} onPress={() => openPicker()}>
             <Text>Data Type</Text>
@@ -115,7 +115,7 @@ export default function App() {
         }
       </View>
 
-      <View>
+      <View style={styles.container}>
         <Text>{currentStat.title}</Text>
         {/* <Text>Anxiety Level</Text> */}
         <LineChart 
@@ -160,13 +160,19 @@ const styles = StyleSheet.create({
   current_stat: {
     flexDirection: 'row',
   },
-  picker: {
-    width: 300
-  },
+  // picker: {
+  //   width: 300
+  // },
+  select_container: {
+    width: Dimensions.get('screen').width,
+  },  
   select_button: {
     width: 100,
     height: 50,
     borderWidth: 2,
     borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 25,
   }
 });

@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
 
 
 export function TypePicker(props){
@@ -20,9 +20,10 @@ export function TypePicker(props){
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'space-between',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
         flexDirection: 'row',
         height: 50,
+        width: Dimensions.get('screen').width,
     }
 })
