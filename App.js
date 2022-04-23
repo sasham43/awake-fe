@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Pressable, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit'
 // import {Picker} from '@react-native-picker/picker'
 import { TypePicker } from './components/Picker'
-import getUserData from './data'
+import { getUserData, getDates } from './data'
 
 export default function App() {
   const [userData, setUserData] = useState([])
@@ -24,6 +24,9 @@ export default function App() {
     // let filtered = data.filter((d, i) => i < 10)
     // setUserData(filtered)
     setCurrent(data[data.length-1])
+
+    let dateInfo = getDates()
+    setDates(dateInfo)
   }, [])
 
   useEffect(() => {
@@ -55,14 +58,31 @@ export default function App() {
     useShadowColorFromDataset: false // optional
   };
 
-  const [pickerOpen, setPickerOpen] = useState(false)
+  const [dataPickerOpen, setDataPickerOpen] = useState(false)
+  const [dayPickerOpen, setDayPickerOpen] = useState(false)
+  const [dates, setDates] = useState([])
 
-  function openPicker(){
+
+
+  function openPicker(type){
     console.log('open')
-    setPickerOpen(!pickerOpen)
+    // setPickerOpen(!pickerOpen)
+    if(type === 'data'){
+      setDataPickerOpen(!dataPickerOpen)
+    } else if (type === 'day'){
+      setDayPickerOpen(!dayPickerOpen)
+    }
   }
   function selectChoice(choice){
     setCurrentStat(choice)
+  }
+  function selectDay(choice){
+    console.log('select day')
+    let data = getUserData({
+      day: choice.value.day(),
+      limit: 5000
+    })
+    setUserData(data)
   }
 
 
@@ -92,12 +112,20 @@ export default function App() {
       
       <View style={styles.select_container}>
         <View>
-          <Pressable style={styles.select_button} onPress={() => openPicker()}>
+          <Pressable style={styles.select_button} onPress={() => openPicker('data')}>
             <Text>Data Type</Text>
           </Pressable>
         </View>
+
+        <View>
+          <Pressable style={styles.select_button} onPress={() => openPicker('day')}>
+            <Text>Date</Text>
+          </Pressable>
+        </View>
+      </View>
+
         {
-          pickerOpen ?
+          dataPickerOpen ?
           <TypePicker
             choices={[
               {
@@ -113,6 +141,18 @@ export default function App() {
           />
           : null
         }
+
+
+        {
+          dayPickerOpen ?
+          <TypePicker
+            choices={dates}
+            selectChoice={selectDay}
+          />
+          : null
+        }
+      <View>
+
       </View>
 
       <View style={styles.container}>
@@ -164,6 +204,8 @@ const styles = StyleSheet.create({
   //   width: 300
   // },
   select_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
     width: Dimensions.get('screen').width,
   },  
   select_button: {
