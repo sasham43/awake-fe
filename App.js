@@ -21,16 +21,21 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    userData.forEach(data => {
-      let hour = data.displayTime.hour()
-      if(!labels.includes(hour)) setLabels([...labels, hour])
+    // userData.forEach(data => {
+    //   let hour = data.displayTime.hour()
+    //   if(!labels.includes(hour)) setLabels([...labels, hour])
+    // })
+    let format = 'HH:mm:ss'
+    let dates = userData.filter((d,i) => i % 10 === 0).map((data) => {
+      return data.displayTime.format(format)
     })
+    setLabels(dates)
   }, [userData])
 
   function onClick(info){
-    console.log('click', info)
+    // console.log('click', info)
     let dataPoint = userData[info.index]
-    setCurrent(dataPoint)
+    setCurrent({...dataPoint, index: info.index})
   }
 
   const chartConfig = {
@@ -65,7 +70,7 @@ export default function App() {
         </View>
         <View style={styles.current_stat}>
           <Text>Time:</Text>
-          <Text>{current.displayTime.format()}</Text>
+          <Text>{current.displayTime ?  current.displayTime.format() : null}</Text>
         </View>
       </View>
       {/* <ScrollView>
@@ -110,6 +115,7 @@ export default function App() {
           width={Dimensions.get("window").width}
           chartConfig={chartConfig}
           onDataPointClick={onClick}
+          getDotColor={(data, index) => index === current.index ? '#343434' : '#000'}
         />        
       </View>
     </View>
