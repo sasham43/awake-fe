@@ -1,13 +1,15 @@
 // import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit'
+import {Picker} from '@react-native-picker/picker'
 import getUserData from './data'
 
 export default function App() {
   const [userData, setUserData] = useState([])
   const [current, setCurrent] = useState({})
   const [labels, setLabels] = useState([])
+  const [currentStat, setCurrentStat] = useState('anxietyLevel')
 
   useEffect(() => {
     let data = getUserData({
@@ -48,6 +50,16 @@ export default function App() {
     barPercentage: 0.5,
     useShadowColorFromDataset: false // optional
   };
+
+  const pickerRef = useRef();
+
+  function open() {
+    pickerRef.current.focus();
+  }
+
+  function close() {
+    pickerRef.current.blur();
+  }
 
 
   return (
@@ -100,6 +112,27 @@ export default function App() {
           }
         </View>
       </ScrollView> */}
+      <View style={styles.select_container}>
+        <View>
+          <Text>Current Statistic:</Text>
+          <Text>{currentStat}</Text>
+          <Picker
+            style={styles.picker}
+            // items={Object.keys(current).map(key => {
+            //   return {label: key, value: key}
+            // })}
+              selectedValue={currentStat}
+             onValueChange={(value) => {
+               console.log(value)
+               setCurrentStat(value)
+             }}
+          >
+            <Picker.Item label="Anxiety Level" value="anxietyLevel"></Picker.Item>
+            {/* <Picker.Item label="Anxiety State" value="anxietyState"></Picker.Item> */}
+            <Picker.Item label="BPM" value="currentBpm"></Picker.Item>
+          </Picker>
+        </View>
+      </View>
 
       <View>
         <Text>Anxiety Level</Text>
@@ -108,7 +141,8 @@ export default function App() {
             labels: labels,
             // labels: ['8:00', '9:00', '10:00'],
             datasets: [{
-              data: userData.map(d => d.anxietyLevel)
+              data: userData.map(d => d[currentStat])
+              // data: userData.map(d => d.anxietyLevel)
             }]
           }}
           height={200}
@@ -143,5 +177,8 @@ const styles = StyleSheet.create({
   },
   current_stat: {
     flexDirection: 'row',
+  },
+  picker: {
+    width: 300
   }
 });
