@@ -61,6 +61,9 @@ export default function App() {
   const [dataPickerOpen, setDataPickerOpen] = useState(false)
   const [dayPickerOpen, setDayPickerOpen] = useState(false)
   const [dates, setDates] = useState([])
+  const [hours, setHours] = useState([])
+  const [currentDay, setCurrentDay] = useState()
+  const [currentHour, setCurrentHour] = useState()
 
 
 
@@ -77,12 +80,28 @@ export default function App() {
     setCurrentStat(choice)
   }
   function selectDay(choice){
-    console.log('select day')
+    // console.log('select day', choice)
     let data = getUserData({
       day: choice.value.day(),
       limit: 5000
     })
     setUserData(data)
+    if(choice.hours.length){
+      setHours(choice.hours)
+    }
+    setCurrentDay(choice.value.day())
+  }
+
+  function selectHour(hour){
+    let data = getUserData({
+      day: currentDay,
+      hour: hour.value,
+      limit: 5000
+    })
+    setUserData(data)
+    // if(choice.hours.length){
+    //   setHours(choice.hours)
+    // }
   }
 
 
@@ -138,6 +157,7 @@ export default function App() {
               },
             ]}
             selectChoice={selectChoice}
+            selectHour={selectHour}
           />
           : null
         }
@@ -146,8 +166,11 @@ export default function App() {
         {
           dayPickerOpen ?
           <TypePicker
+            selected={currentStat}
             choices={dates}
             selectChoice={selectDay}
+            hours={hours}
+            selectHour={selectHour}
           />
           : null
         }
