@@ -1,6 +1,6 @@
 // import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Pressable, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Dimensions, ScrollView } from 'react-native';
 import { LineChart } from 'react-native-chart-kit'
 // import {Picker} from '@react-native-picker/picker'
 import { TypePicker } from './components/Picker'
@@ -65,7 +65,9 @@ export default function App() {
   const [currentDay, setCurrentDay] = useState()
   const [currentHour, setCurrentHour] = useState()
 
-
+  useEffect(()=> {
+    // selectHour(hours[0])
+  }, [currentDay])
 
   function openPicker(type){
     console.log('open')
@@ -81,11 +83,11 @@ export default function App() {
   }
   function selectDay(choice){
     // console.log('select day', choice)
-    let data = getUserData({
-      day: choice.value.day(),
-      limit: 5000
-    })
-    setUserData(data)
+    // let data = getUserData({
+    //   day: choice.value.day(),
+    //   limit: 5000
+    // })
+    // setUserData(data)
     if(choice.hours.length){
       setHours(choice.hours)
     }
@@ -181,21 +183,23 @@ export default function App() {
       <View style={styles.container}>
         <Text>{currentStat.title}</Text>
         {/* <Text>Anxiety Level</Text> */}
-        <LineChart 
-          data={{
-            labels: labels,
-            // labels: ['8:00', '9:00', '10:00'],
-            datasets: [{
-              data: userData.map(d => d[currentStat.value])
-              // data: userData.map(d => d.anxietyLevel)
-            }]
-          }}
-          height={200}
-          width={Dimensions.get("window").width}
-          chartConfig={chartConfig}
-          onDataPointClick={onClick}
-          getDotColor={(data, index) => index === current.index ? '#343434' : '#000'}
-        />        
+        <ScrollView horizontal style={styles.scroll}>
+          <LineChart 
+            data={{
+              labels: labels,
+              // labels: ['8:00', '9:00', '10:00'],
+              datasets: [{
+                data: userData.map(d => d[currentStat.value])
+                // data: userData.map(d => d.anxietyLevel)
+              }]
+            }}
+            height={300}
+            width={Dimensions.get("window").width * 4}
+            chartConfig={chartConfig}
+            onDataPointClick={onClick}
+            getDotColor={(data, index) => index === current.index ? '#343434' : '#000'}
+          />        
+        </ScrollView>
       </View>
     </View>
   );
@@ -239,5 +243,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 25,
+  },
+  scroll: {
+    // flexDirection: 'row',
+    // width: Dimensions.get('screen').width * 3,
   }
 });

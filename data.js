@@ -66,7 +66,7 @@ export function getDates(){
         },
     ]
     for(var i = 0; i < diff; i++) {
-        let newDate = first.displayTime.add(i+1, 'day')
+        let newDate = first.displayTime.add(i+1, 'day').hour(0)
         let choice = {
             title: newDate.format(format),
             value: newDate,
@@ -76,11 +76,18 @@ export function getDates(){
         // dates.push(first.displayTime.add(1, 'day').format())
     }
 
+    dates[dates.length-1] = {
+        title: last.displayTime.format('ddd M-D'),
+        value: last.displayTime,
+        hours: getHours(dayjs().hour(0), last.displayTime)
+    }
+
     return dates
 }
 
-function getHours(time){
-    let start = time.hour()
+function getHours(start_time, end_time){
+    let start = start_time.hour()
+    let end = end_time ? end_time.hour() : 24
     let hours = []
     for(var i = start; i <= 24; i++){
         hours.push(i)
