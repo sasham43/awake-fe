@@ -1,15 +1,19 @@
 // import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit'
-import {Picker} from '@react-native-picker/picker'
+// import {Picker} from '@react-native-picker/picker'
+import { TypePicker } from './components/Picker'
 import getUserData from './data'
 
 export default function App() {
   const [userData, setUserData] = useState([])
   const [current, setCurrent] = useState({})
   const [labels, setLabels] = useState([])
-  const [currentStat, setCurrentStat] = useState('anxietyLevel')
+  const [currentStat, setCurrentStat] = useState({
+    title: 'Anxiety Level',
+    value: 'anxietyLevel'
+  })
 
   useEffect(() => {
     let data = getUserData({
@@ -51,14 +55,14 @@ export default function App() {
     useShadowColorFromDataset: false // optional
   };
 
-  const pickerRef = useRef();
+  const [pickerOpen, setPickerOpen] = useState(false)
 
-  function open() {
-    pickerRef.current.focus();
+  function openPicker(){
+    console.log('open')
+    setPickerOpen(!pickerOpen)
   }
-
-  function close() {
-    pickerRef.current.blur();
+  function selectChoice(choice){
+    setCurrentStat(choice)
   }
 
 
@@ -85,63 +89,41 @@ export default function App() {
           <Text>{current.displayTime ?  current.displayTime.format() : null}</Text>
         </View>
       </View>
-      {/* <ScrollView>
-        <View style={styles.data_container}>
-          {
-            userData.map((data, index) => {
-              return (
-                <View key={`data-point-${index}`} style={styles.data_point}>
-                  <Text>User Data:</Text>
-                  {
-                    Object.keys(data).map((key, i) => {
-                      if(typeof data[key] === 'object' || key.includes('Id')) return null
-
-                      return (
-                        <View key={`key-${index}-${key}`}>
-                          <Text>{key}:</Text>
-                          <View>
-                            <Text>{data[key]}</Text>
-                          </View>
-                        </View>
-                      )
-                    })
-                  }
-                </View>
-              )
-            })
-          }
-        </View>
-      </ScrollView> */}
-      <View style={styles.select_container}>
+      
+      <View>
         <View>
-          <Text>Current Statistic:</Text>
-          <Text>{currentStat}</Text>
-          <Picker
-            style={styles.picker}
-            // items={Object.keys(current).map(key => {
-            //   return {label: key, value: key}
-            // })}
-              selectedValue={currentStat}
-             onValueChange={(value) => {
-               console.log(value)
-               setCurrentStat(value)
-             }}
-          >
-            <Picker.Item label="Anxiety Level" value="anxietyLevel"></Picker.Item>
-            {/* <Picker.Item label="Anxiety State" value="anxietyState"></Picker.Item> */}
-            <Picker.Item label="BPM" value="currentBpm"></Picker.Item>
-          </Picker>
+          <Pressable style={styles.select_button} onPress={() => openPicker()}>
+            <Text>Data Type</Text>
+          </Pressable>
         </View>
+        {
+          pickerOpen ?
+          <TypePicker
+            choices={[
+              {
+                title: 'Anxiety Level',
+                value: 'anxietyLevel'
+              },
+              {
+                title: 'BPM',
+                value: 'currentBpm'
+              },
+            ]}
+            selectChoice={selectChoice}
+          />
+          : null
+        }
       </View>
 
       <View>
-        <Text>Anxiety Level</Text>
+        <Text>{currentStat.title}</Text>
+        {/* <Text>Anxiety Level</Text> */}
         <LineChart 
           data={{
             labels: labels,
             // labels: ['8:00', '9:00', '10:00'],
             datasets: [{
-              data: userData.map(d => d[currentStat])
+              data: userData.map(d => d[currentStat.value])
               // data: userData.map(d => d.anxietyLevel)
             }]
           }}
@@ -180,5 +162,11 @@ const styles = StyleSheet.create({
   },
   picker: {
     width: 300
+  },
+  select_button: {
+    width: 100,
+    height: 50,
+    borderWidth: 2,
+    borderRadius: 5,
   }
 });
