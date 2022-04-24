@@ -17,13 +17,13 @@ export function TypePicker(props){
                     })
                 }
             </View>
-            <View style={styles.container}>
                 {
                     props.hours?.length ?
-                    <Hours hours={props.hours} selectHour={props.selectHour} />
+                    <View style={styles.container}>
+                        <Hours hours={props.hours} selectHour={props.selectHour} />
+                    </View>
                     : null
                 }
-            </View>
         </>
     )
 }

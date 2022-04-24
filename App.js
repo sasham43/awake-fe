@@ -115,6 +115,8 @@ export default function App() {
         </View>
       </View>
 
+
+      <View>
         {
           dataPickerOpen ?
           <TypePicker
@@ -146,12 +148,12 @@ export default function App() {
           />
           : null
         }
-      <View>
-
       </View>
 
       <View style={styles.chart_container}>
-        <Text>{currentStat.title}</Text>
+        <View style={styles.title_container}>
+          <Text>{currentStat.title}</Text>
+        </View>
         {/* <Text>Anxiety Level</Text> */}
         <ScrollView horizontal style={styles.scroll}>
           <LineChart 
@@ -238,12 +240,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 25,
   },
-  scroll: {
-    // flexDirection: 'row',
-    // width: Dimensions.get('screen').width * 3,
-  },
   chart_container: {
     // flex: 2,
     height: 300
+  },
+  title_container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    marginTop: 20,
   }
 });
