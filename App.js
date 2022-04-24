@@ -179,20 +179,20 @@ export default function App() {
       { current.anxietyLevel !== undefined ?
         <View style={styles.current_stats_container}>
           <View style={styles.current_stat}>
-            <Text>Anxiety Level: </Text>
+            <Text style={styles.label}>Anxiety Level: </Text>
             <Text>{current.anxietyLevel}</Text>
           </View>
           <View style={styles.current_stat}>
-            <Text>Anxiety State: </Text>
+            <Text style={styles.label}>Anxiety State: </Text>
             <Text>{current.anxietyState}</Text>
           </View>
           <View style={styles.current_stat}>
-            <Text>BPM: </Text>
+            <Text style={styles.label}>BPM: </Text>
             <Text>{current.currentBpm}</Text>
           </View>
           <View style={styles.current_stat}>
-            <Text>Time: </Text>
-            <Text>{current.displayTime ?  current.displayTime.format() : null}</Text>
+            <Text style={styles.label}>Time: </Text>
+            <Text>{current.displayTime ?  current.displayTime.format('hh:mm:ss ddd MM-DD-YYYY') : null}</Text>
           </View>
         </View>
         : null
@@ -244,10 +244,23 @@ const styles = StyleSheet.create({
     // flex: 2,
     height: 300
   },
+  current_stats_container: {
+    marginTop: 20,
+  },
+  current_stat: {
+    flexDirection:'row',
+    justifyContent: 'space-between',
+  },
   title_container: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
     marginTop: 20,
+  },
+  label: {
+    fontWeight: '600',
+  },
+  value: {
+    alignItems: 'flex-end'
   }
 });
