@@ -2,16 +2,15 @@ import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
 
 
 export function TypePicker(props){
-    // console.log('len', props.hours)
+    console.log('props', props)
     return (
         <>
             <View style={styles.container}>
-                {/* <Text>Here</Text> */}
                 {
                     props.choices.map((choice, index) => {
                         return (
-                            <Pressable onPress={() => props.selectChoice(choice)} key={`choice-${index}`}>
-                                <Text>{choice.title}</Text>
+                            <Pressable style={[styles.choice_button, props.selected.title === choice.title ? styles.selected_choice : null]} onPress={() => props.selectChoice(choice)} key={`choice-${index}`}>
+                                <Text style={props.selected.title === choice.title ? styles.selected_choice : null}>{choice.title}</Text>
                             </Pressable>
                         )
                     })
@@ -139,5 +138,18 @@ const styles = StyleSheet.create({
     },
     selected_button_text: {
         color: 'white'
+    },
+    choice_button: {
+        flex: 1,
+        borderWidth: 1,
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 50,
+        borderColor: '#aaa'
+        // padding: 25
+    },
+    selected_choice: {
+        borderColor: '#333'
     }
 })

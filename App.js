@@ -120,6 +120,7 @@ export default function App() {
         {
           dataPickerOpen ?
           <TypePicker
+            selected={currentStat}
             choices={[
               {
                 title: 'Anxiety Level',
