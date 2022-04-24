@@ -19,21 +19,14 @@ export default function App() {
     let data = getUserData({
       limit: 50
     })
-    // console.log('get user data', data.length)
     setUserData(data)
-    // let filtered = data.filter((d, i) => i < 10)
-    // setUserData(filtered)
-    setCurrent(data[data.length-1])
+    // setCurrent(data[data.length-1])
 
     let dateInfo = getDates()
     setDates(dateInfo)
   }, [])
 
   useEffect(() => {
-    // userData.forEach(data => {
-    //   let hour = data.displayTime.hour()
-    //   if(!labels.includes(hour)) setLabels([...labels, hour])
-    // })
     let format = 'HH:mm:ss'
     let dates = userData.filter((d,i) => i % 10 === 0).map((data) => {
       return data.displayTime.format(format)
@@ -42,7 +35,6 @@ export default function App() {
   }, [userData])
 
   function onClick(info){
-    // console.log('click', info)
     let dataPoint = userData[info.index]
     setCurrent({...dataPoint, index: info.index})
   }
@@ -101,35 +93,11 @@ export default function App() {
       limit: 5000
     })
     setUserData(data)
-    // if(choice.hours.length){
-    //   setHours(choice.hours)
-    // }
   }
 
 
   return (
     <View style={styles.container}>
-      {/* <Text>Open up App.js to start working on your app!</Text> */}
-      {/* <StatusBar style="auto" /> */}
-      <View style={styles.current_stats_container}>
-        {/* <Text>Current Mood:</Text> */}
-        <View style={styles.current_stat}>
-          <Text>Anxiety Level:</Text>
-          <Text>{current.anxietyLevel}</Text>
-        </View>
-        <View style={styles.current_stat}>
-          <Text>Anxiety State:</Text>
-          <Text>{current.anxietyState}</Text>
-        </View>
-        <View style={styles.current_stat}>
-          <Text>BPM:</Text>
-          <Text>{current.currentBpm}</Text>
-        </View>
-        <View style={styles.current_stat}>
-          <Text>Time:</Text>
-          <Text>{current.displayTime ?  current.displayTime.format() : null}</Text>
-        </View>
-      </View>
       
       <View style={styles.select_container}>
         <View>
@@ -180,7 +148,7 @@ export default function App() {
 
       </View>
 
-      <View style={styles.container}>
+      <View style={styles.chart_container}>
         <Text>{currentStat.title}</Text>
         {/* <Text>Anxiety Level</Text> */}
         <ScrollView horizontal style={styles.scroll}>
@@ -201,6 +169,30 @@ export default function App() {
           />        
         </ScrollView>
       </View>
+
+
+
+      { current.anxietyLevel ?
+        <View style={styles.current_stats_container}>
+          <View style={styles.current_stat}>
+            <Text>Anxiety Level: </Text>
+            <Text>{current.anxietyLevel}</Text>
+          </View>
+          <View style={styles.current_stat}>
+            <Text>Anxiety State: </Text>
+            <Text>{current.anxietyState}</Text>
+          </View>
+          <View style={styles.current_stat}>
+            <Text>BPM: </Text>
+            <Text>{current.currentBpm}</Text>
+          </View>
+          <View style={styles.current_stat}>
+            <Text>Time: </Text>
+            <Text>{current.displayTime ?  current.displayTime.format() : null}</Text>
+          </View>
+        </View>
+        : null
+      }
     </View>
   );
 }
@@ -210,7 +202,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     paddingTop: 100,
   },
   data_container: {
@@ -247,5 +239,9 @@ const styles = StyleSheet.create({
   scroll: {
     // flexDirection: 'row',
     // width: Dimensions.get('screen').width * 3,
+  },
+  chart_container: {
+    // flex: 2,
+    height: 300
   }
 });
