@@ -14,6 +14,7 @@ export default function App() {
     title: 'Anxiety Level',
     value: 'anxietyLevel'
   })
+  const [chartData, setChartData] = useState([])
 
   useEffect(() => {
     let data = getUserData({
@@ -22,10 +23,8 @@ export default function App() {
       hour: 9
     })
     setUserData(data)
-    // setCurrent(data[data.length-1])
 
     let dateInfo = getDates()
-    console.log('dateino', dateInfo)
     setDates(dateInfo)
   }, [])
 
@@ -35,6 +34,10 @@ export default function App() {
       return data.displayTime.format(format)
     })
     setLabels(dates)
+
+    let chart_data = userData.map(d => d[currentStat.value])
+    
+    setChartData(chart_data)
   }, [userData])
 
   function onClick(info){
@@ -58,14 +61,8 @@ export default function App() {
   const [dates, setDates] = useState([])
   const [hours, setHours] = useState([])
   const [currentDay, setCurrentDay] = useState({})
-  const [currentHour, setCurrentHour] = useState()
-
-  useEffect(()=> {
-    // selectHour(hours[0])
-  }, [currentDay])
 
   function openPicker(type){
-    // setPickerOpen(!pickerOpen)
     if(type === 'data'){
       setDataPickerOpen(!dataPickerOpen)
     } else if (type === 'day'){
@@ -76,17 +73,10 @@ export default function App() {
     setCurrentStat(choice)
   }
   function selectDay(choice){
-    // console.log('select day', choice)
-    // let data = getUserData({
-    //   day: choice.value.day(),
-    //   limit: 5000
-    // })
-    // setUserData(data)
     if(choice.hours.length){
       setHours(choice.hours)
     }
     setCurrentDay(choice)
-    // setCurrentDay(choice.value.day())
   }
 
   function selectHour(hour){
@@ -95,13 +85,16 @@ export default function App() {
       hour: hour.value,
       limit: 5000
     })
-    console.log('current', currentDay, hour.value)
+    
     setUserData(data)
   }
 
 
   return (
     <View style={styles.container}>
+      <View style={styles.header_container}>
+        <Text style={styles.header}>Patient Information</Text>
+      </View>
       
       <View style={styles.select_container}>
         <View>
@@ -179,7 +172,8 @@ export default function App() {
               labels: labels,
               // labels: ['8:00', '9:00', '10:00'],
               datasets: [{
-                data: userData.map(d => d[currentStat.value])
+                data: chartData
+                // data: userData.map(d => d[currentStat.value])
                 // data: userData.map(d => d.anxietyLevel)
               }]
             }}
@@ -241,9 +235,9 @@ const styles = StyleSheet.create({
   current_stat: {
     flexDirection: 'row',
   },
-  // picker: {
-  //   width: 300
-  // },
+  header: {
+    fontSize: 22
+  },
   select_container: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',

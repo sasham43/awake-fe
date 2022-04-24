@@ -28,7 +28,6 @@ export function getUserData({ limit, day, hour }){
         return {
             ...data,
             displayTime: dayjs(data.time)
-            // displayTime: dayjs(data.time).format()
         }
     }).filter((data, index) => {
         if(hour){
@@ -38,9 +37,6 @@ export function getUserData({ limit, day, hour }){
         } else {
             return index < limit
         }
-        // return day ? 
-        // (data.displayTime.day() == day) && (index < limit)
-        // : (index < limit)
     })
 }
 
@@ -48,11 +44,7 @@ export function getDates(){
     first.displayTime = dayjs(first.time)
     last.displayTime = dayjs(last.time)
 
-    // console.log('first', first.displayTime.format())
-    // console.log('last', last.displayTime.format())
-
     let diff = last.displayTime.diff(first.displayTime, 'day')
-    // console.log('diff', diff)
 
     let format = 'ddd M-D'
 
@@ -73,7 +65,6 @@ export function getDates(){
             hours: getHours(newDate)
         }
         dates.push(choice)
-        // dates.push(first.displayTime.add(1, 'day').format())
     }
 
     dates[dates.length-1] = {
@@ -92,6 +83,6 @@ function getHours(start_time, end_time){
     for(var i = start; i <= 24; i++){
         hours.push(i)
     }
-    // console.log('hours start', start, hours)
+    
     return hours
 }
