@@ -25,6 +25,7 @@ export default function App() {
     // setCurrent(data[data.length-1])
 
     let dateInfo = getDates()
+    console.log('dateino', dateInfo)
     setDates(dateInfo)
   }, [])
 
@@ -84,12 +85,13 @@ export default function App() {
     if(choice.hours.length){
       setHours(choice.hours)
     }
-    setCurrentDay(choice.value.day())
+    setCurrentDay(choice)
+    // setCurrentDay(choice.value.day())
   }
 
   function selectHour(hour){
     let data = getUserData({
-      day: currentDay,
+      day: currentDay.day(),
       hour: hour.value,
       limit: 5000
     })
@@ -104,13 +106,13 @@ export default function App() {
       <View style={styles.select_container}>
         <View>
           <Pressable style={styles.select_button} onPress={() => openPicker('data')}>
-            <Text>Data Type</Text>
+            <Text style={dataPickerOpen ? styles.bold : null}>Data Type</Text>
           </Pressable>
         </View>
 
         <View>
           <Pressable style={styles.select_button} onPress={() => openPicker('day')}>
-            <Text>Date</Text>
+            <Text style={dayPickerOpen ? styles.bold : null}>Date</Text>
           </Pressable>
         </View>
       </View>
@@ -141,7 +143,7 @@ export default function App() {
         {
           dayPickerOpen ?
           <TypePicker
-            selected={currentStat}
+            selected={currentDay}
             choices={dates}
             selectChoice={selectDay}
             hours={hours}
@@ -263,5 +265,8 @@ const styles = StyleSheet.create({
   },
   value: {
     alignItems: 'flex-end'
+  },
+  bold: {
+    fontWeight: '600'
   }
 });
