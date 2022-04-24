@@ -32,7 +32,7 @@ export function getUserData({ limit, day, hour }){
         }
     }).filter((data, index) => {
         if(hour){
-            return (data.displayTime.hour() == hour) && (index < limit)
+            return (data.displayTime.hour() == hour) && (data.displayTime.day() == day) && (index < limit)
         } else if (day){
             return (data.displayTime.day() == day) && (index < limit)
         } else {

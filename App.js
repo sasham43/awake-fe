@@ -17,7 +17,9 @@ export default function App() {
 
   useEffect(() => {
     let data = getUserData({
-      limit: 50
+      limit: 5000,
+      day: 2,
+      hour: 9
     })
     setUserData(data)
     // setCurrent(data[data.length-1])
@@ -62,7 +64,6 @@ export default function App() {
   }, [currentDay])
 
   function openPicker(type){
-    console.log('open')
     // setPickerOpen(!pickerOpen)
     if(type === 'data'){
       setDataPickerOpen(!dataPickerOpen)
@@ -92,6 +93,7 @@ export default function App() {
       hour: hour.value,
       limit: 5000
     })
+    console.log('current', currentDay, hour.value)
     setUserData(data)
   }
 
@@ -172,7 +174,7 @@ export default function App() {
 
 
 
-      { current.anxietyLevel ?
+      { current.anxietyLevel !== undefined ?
         <View style={styles.current_stats_container}>
           <View style={styles.current_stat}>
             <Text>Anxiety Level: </Text>
