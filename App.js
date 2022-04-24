@@ -57,7 +57,7 @@ export default function App() {
   const [dayPickerOpen, setDayPickerOpen] = useState(false)
   const [dates, setDates] = useState([])
   const [hours, setHours] = useState([])
-  const [currentDay, setCurrentDay] = useState()
+  const [currentDay, setCurrentDay] = useState({})
   const [currentHour, setCurrentHour] = useState()
 
   useEffect(()=> {
@@ -91,7 +91,7 @@ export default function App() {
 
   function selectHour(hour){
     let data = getUserData({
-      day: currentDay.day(),
+      day: currentDay.value.day(),
       hour: hour.value,
       limit: 5000
     })
@@ -142,13 +142,28 @@ export default function App() {
 
         {
           dayPickerOpen ?
-          <TypePicker
-            selected={currentDay}
-            choices={dates}
-            selectChoice={selectDay}
-            hours={hours}
-            selectHour={selectHour}
-          />
+          <>
+            <TypePicker
+              selected={currentDay}
+              choices={dates}
+              selectChoice={selectDay}
+              hours={hours}
+              selectHour={selectHour}
+            />
+            <TypePicker
+              selected={currentDay}
+              choices={hours.map(hour => {
+                return {
+                  title: hour,
+                  value: hour
+                }
+              })}
+              hourPicker={true}
+              selectChoice={selectHour}
+              container_style={styles.hours_container}
+              button_style={styles.hours_button}
+            />
+          </>
           : null
         }
       </View>
@@ -268,5 +283,11 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: '600'
+  },
+  // hours_container: {
+  //   over
+  // },
+  hours_button: {
+    width: 50,
   }
 });

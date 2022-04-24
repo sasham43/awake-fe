@@ -1,28 +1,38 @@
-import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
+import { ScrollView, View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
 
 
 export function TypePicker(props){
     console.log('props', props)
+    if(props.hourPicker){
+        return (
+            <>
+                <ScrollView horizontal style={styles.hour_container}>
+                    {
+                        props.choices.map((choice, index) => {
+                            return (
+                                <Pressable style={[styles.choice_button, styles.hour_button, props.selected.title === choice.title ? styles.selected_choice : null]} onPress={() => props.selectChoice(choice)} key={`choice-${index}`}>
+                                    <Text style={props.selected?.title === choice.title ? styles.selected_choice : null}>{choice.title}</Text>
+                                </Pressable>
+                            )
+                        })
+                    }
+                </ScrollView>
+            </>
+        )
+    }
     return (
         <>
-            <View style={styles.container}>
+            <View style={[styles.container, props.container_style]}>
                 {
                     props.choices.map((choice, index) => {
                         return (
                             <Pressable style={[styles.choice_button, props.selected.title === choice.title ? styles.selected_choice : null]} onPress={() => props.selectChoice(choice)} key={`choice-${index}`}>
-                                <Text style={props.selected.title === choice.title ? styles.selected_choice : null}>{choice.title}</Text>
+                                <Text style={props.selected?.title === choice.title ? styles.selected_choice : null}>{choice.title}</Text>
                             </Pressable>
                         )
                     })
                 }
             </View>
-                {
-                    props.hours?.length ?
-                    <View style={styles.container}>
-                        <Hours hours={props.hours} selectHour={props.selectHour} />
-                    </View>
-                    : null
-                }
         </>
     )
 }
@@ -113,22 +123,23 @@ const styles = StyleSheet.create({
         width: Dimensions.get('screen').width,
     },
     hour_container: {
-        // height: 100,
+        flexGrow: 0,
+        height: 100,
         // width: Dimensions.get('screen').width,
-        flexDirection: 'column',
+        // flexDirection: 'column',
     },
     time_of_day_container: {
         flexDirection: 'row'
     },
-    hour_button: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        // padding: 4,
-        width: 40,
-        height: 20,
-        borderWidth: 1,
-        // backgroundColor: 'red',
-    },
+    // hour_button: {
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     // padding: 4,
+    //     width: 40,
+    //     height: 20,
+    //     borderWidth: 1,
+    //     // backgroundColor: 'red',
+    // },
     hour_button_text: {
         color: 'black',
     },
@@ -151,5 +162,8 @@ const styles = StyleSheet.create({
     },
     selected_choice: {
         borderColor: '#333'
+    },
+    hour_button: {
+        width: 50,
     }
 })
